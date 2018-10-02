@@ -1,0 +1,23 @@
+package edu.ung.mccb.csci.csci3300.model;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+
+public class Model {
+
+    public void saveToDB (String firstName, String lastName, String email) {
+        String query = "INSERT INTO mailinglist" + "(firstName, lastName, email)" + "values(?,?,?)";
+
+        try (Connection conn = DatabaseConfig.getConnection();
+        PreparedStatement sqlStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);) {
+            sqlStatement.setString(1,firstName);
+            sqlStatement.setString(2,lastName);
+            sqlStatement.setString(3,email);
+
+            sqlStatement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Operation failed due to SQL Exception.\n" + e);
+        }
+        return;
+    }
+}
